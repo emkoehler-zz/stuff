@@ -6,13 +6,13 @@ import ldclient
 import pandas as pd
 from collections import OrderedDict
 
-#root = logging.getLogger()
-#root.setLevel(logging.INFO)
-#ch = logging.StreamHandler(sys.stdout)
-#ch.setLevel(logging.INFO)
-#formatter = logging.Formatter('%(asctime)s - %(name)s - %(levelname)s - %(message)s')
-#ch.setFormatter(formatter)
-#root.addHandler(ch)
+root = logging.getLogger()
+root.setLevel(logging.INFO)
+ch = logging.StreamHandler(sys.stdout)
+ch.setLevel(logging.INFO)
+formatter = logging.Formatter('%(asctime)s - %(name)s - %(levelname)s - %(message)s')
+ch.setFormatter(formatter)
+root.addHandler(ch)
 
 if __name__ == "__main__":
   ldclient.set_sdk_key("sdk-3ae95d87-da7e-4deb-8f08-1d6d0961abcb")
