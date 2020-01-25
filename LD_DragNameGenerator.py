@@ -5,48 +5,54 @@ import sys
 import ldclient
 import pandas as pd
 from collections import OrderedDict
+import uuid
 
-root = logging.getLogger()
-root.setLevel(logging.INFO)
-ch = logging.StreamHandler(sys.stdout)
-ch.setLevel(logging.INFO)
-formatter = logging.Formatter('%(asctime)s - %(name)s - %(levelname)s - %(message)s')
-ch.setFormatter(formatter)
-root.addHandler(ch)
+#root = logging.getLogger()
+#root.setLevel(logging.INFO)
+#ch = logging.StreamHandler(sys.stdout)
+#ch.setLevel(logging.INFO)
+#formatter = logging.Formatter('%(asctime)s - %(name)s - %(levelname)s - %(message)s')
+#ch.setFormatter(formatter)
+#root.addHandler(ch)
 
 if __name__ == "__main__":
-  ldclient.set_sdk_key("sdk-3ae95d87-da7e-4deb-8f08-1d6d0961abcb")
+  ldclient.set_sdk_key("SDK KEY_Emily's Test Project - Test")
 
+  # load dictionaries with name/sign data
+  firstNameMap = { 'a': 'Amethyst', 'b': 'Bold', 'c': 'Curvy', 'd': 'Daring', 'e': 'Electric', 'f': 'Fatal', 'g': 'Grace', 'h': 'Horrendous', 'i': 'Ign', 'j': 'Jolly', 'k': 'Killer', 'l': 'Loud', 'm': 'Magnificent', 'n': 'Nasty', 'o': 'Orange', 'p': 'Plain', 'q': 'Queen', 'r': 'Righteous', 's': 'Saucy', 't': 'Terrifying', 'u': 'Unicorn', 'v': 'Vivacious', 'w': 'Wild', 'x': 'Xanthic', 'y': 'Yummy', 'z': 'Zesty'}
+  lastNameMap = {'aries': 'Impulse', 'taurus': 'Bull', 'gemini': 'Twoface', 'cancer': 'Moody','leo': 'Star', 'virgo': 'Flawless', 'libra': 'Flake', 'scorpio': 'Intense','sagittarius': 'Airborne', 'capricorn': 'ambition', 'aquarius': 'Ice','pisces': 'Spacey'}
+
+  # get user info
+  print ("Welcome to the Drag Name Generator!")
+
+  firstname = input("Please enter your first name: ")
+  while not firstname.isalpha():
+      print ("You typed something wrong!")
+      firstname = input("Please enter your first name: ")
+  firstnameletter = firstname[:1]
+  dragFirstName = firstNameMap[firstnameletter.lower()]
+  
+  sign = input("Please enter your astrological sign: ")
+  while sign.lower() not in lastNameMap:
+      print ("You typed something wrong!")
+      sign = input("Please enter your astrological sign: ")
+  dragLastName = lastNameMap[sign.lower()]
+
+  # set user info
   user = {
-    "key": "rupaul@vh1.com",
-    "firstName": "RuPaul",
-    "lastName": "Andre Charles",
+    "key": uuid.uuid4(),
+    "firstName": firstname,
     "custom": {
-      "groups": "beta_testers"
+      "astroSign": sign
     }
   }
 
-  show_feature1 = ldclient.get().variation("first-name", user, False)
-#  show_feature2 = ldclient.get().variation("last-name", user, False)
+  # evaluate feature flag
+  disable_lastname = ldclient.get().variation("dg-first-name-only", user, False)
 
-  if show_feature1:
-      # load data frame with first name data
-      firstNameData = {'LetterFirstName': { 'A': 'Amethyst', 'B': 'Bold', 'C': 'Curvy', 'D': 'Daring', 'E': 'Electric', 'F': 'Fatal', 'G': 'Grace', 'H': 'Horrendous', 'I': 'Ign', 'J': 'Jolly', 'K': 'Killer', 'L': 'Loud', 'M': 'Magnificent', 'N': 'Nasty', 'O': 'Orange', 'P': 'Plain', 'Q': 'Queen', 'R': 'Righteous', 'S': 'Saucy', 'T': 'Terrifying', 'U': 'Unicorn', 'V': 'Vivacious', 'W': 'Wild', 'X': 'Xanthic', 'Y': 'Yummy', 'Z': 'Zesty'},
-                       'LetterLastName': {'Aries': 'Impulse', 'Taurus': 'Bull', 'Gemini': 'Twoface', 'Cancer': 'Moody','Leo': 'Star', 'Virgo': 'Flawless', 'Libra': 'Flake', 'Scorpio': 'Intense','Sagittarius': 'Airborne', 'Capricorn': 'Ambition', 'Aquarius': 'Ice','Pisces': 'Spacey'}
-                       }
-      df = pd.DataFrame.from_dict(firstNameData)
-
-      # have a line with welcome printed
-      print ("Welcome to the Drag Name Generator - in honor of pride month!")
-      firstname = input("Please enter the letter of your first name : ")
-      while not firstname.isalpha() or len(firstname) != 1:
-          print ("You typed something wrong!")
-          firstname = input("Please enter the letter of your first name : ")
-      # match letter to output name field
-      dragFirstName = firstNameData["LetterFirstName"][firstname]
-      # print output drag name
-      print("Your Drag First Name is: ", dragFirstName)
+  if disable_lastname:
+    print("Your Drag First Name is: ", dragFirstName)
   else:
-    print ("Not showing your feature")
+    print("Your Drag Name is: ", dragFirstName," ", dragLastName)
 
   ldclient.get().close() # close the client before exiting the program - ensures that all events are delivered
