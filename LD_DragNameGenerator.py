@@ -16,7 +16,7 @@ import uuid
 #root.addHandler(ch)
 
 if __name__ == "__main__":
-  ldclient.set_sdk_key("sdk-2d3f57a1-ea83-49e8-938e-f1f352898abc")
+  ldclient.set_sdk_key("SDK KEY_Emily's Test Project - Test")
 
   # load dictionaries with name/sign data
   firstNameMap = { 'a': 'Amethyst', 'b': 'Bold', 'c': 'Curvy', 'd': 'Daring', 'e': 'Electric', 'f': 'Fatal', 'g': 'Grace', 'h': 'Horrendous', 'i': 'Ign', 'j': 'Jolly', 'k': 'Killer', 'l': 'Loud', 'm': 'Magnificent', 'n': 'Nasty', 'o': 'Orange', 'p': 'Plain', 'q': 'Queen', 'r': 'Righteous', 's': 'Saucy', 't': 'Terrifying', 'u': 'Unicorn', 'v': 'Vivacious', 'w': 'Wild', 'x': 'Xanthic', 'y': 'Yummy', 'z': 'Zesty'}
